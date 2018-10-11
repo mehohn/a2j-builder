@@ -46,6 +46,22 @@ def find_in_grid(frame, row, column):
             return children
     return None
 
+def makepage():
+    temppage = "<PAGE NAME=\"" + pagename + "\" " + "TYPE=\"A2J\" "
+    return temppage
+
+def makevar(varname, vartext, varcomment):
+    tempvar = "<VARIABLE NAME=\"" + varname + "\" TYPE=\"" + vartext + "\" COMMENT=\"" + varcomment + "\"/>"
+    return tempvar
+
+def makestep(stepnum, steptext):
+    tempstep = "<STEP NUMBER=\"" + stepnum + "\"><TEXT>" + steptext + "</TEXT></STEP>"
+    return tempstep
+
+def makefield(fieldtext, fieldreq, fieldlabel, fieldname):
+    tempfield =  "<FIELD TYPE=\"" + fieldtext +"\" REQUIRED=\"" + fieldreq + "\" CALCULATOR=\"false\"><LABEL>" + fieldlabel + "</LABEL><NAME>" + fieldname + "</NAME></FIELD>"
+    return tempfield
+
 c = Button(root, text="Save", command=callback)
 c.grid()
 
