@@ -16,6 +16,10 @@ STEPS = 1
 PAGES = 1
 VARS = 1
 
+stepAry = []
+pageAry = []
+varAry = []
+
 #master = Tk()
 
 def callback():
@@ -106,14 +110,17 @@ def maketable(nosteps, nopages, novars):
     sl2 = 1
     so = 2
     sd = so + nosteps
-    pl = sd + 1
-    pl2 = sd + 2
-    po = sd + 3
+    print "sd %d" % sd
+    pl = sd + 0
+    pl2 = sd + 1
+    po = sd + 2
     pd = po + nopages
-    vl = pd + 1
-    vl2 = pd + 2
-    vo = pd + 3
+    print "pd %d" % pd
+    vl = pd + 0
+    vl2 = pd + 1
+    vo = pd + 2
     vd = vo + novars
+    print "vd %d" % vd
     em = vd + 1
 
     steptitle = Label(root, text="STEPS")
@@ -144,6 +151,7 @@ def maketable(nosteps, nopages, novars):
     for i in range(so, sd): #Rows
         for j in range(2): #Columns
             b = Entry(root, text="")
+            b.insert(END, '%d.%d' % (i, j))
             b.grid(row=i, column=j)
     
     pagetitle.grid(row=pl, column=0)
@@ -154,6 +162,7 @@ def maketable(nosteps, nopages, novars):
     for i in range(po, pd): #Rows
         for j in range(5): #Columns
             b = Entry(root, text="")
+            b.insert(END, '%d.%d' % (i, j))
             b.grid(row=i, column=j)
     
     vartitle.grid(row=vl, column=0)
@@ -164,6 +173,7 @@ def maketable(nosteps, nopages, novars):
     for i in range(vo, vd): #Rows
         for j in range(3): #Columns
             b = Entry(root, text="")
+            b.insert(END, '%d.%d' % (i, j))
             b.grid(row=i, column=j)
     c.grid(row=em, column=0)
     d.grid(row=em, column=1)
@@ -228,7 +238,7 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 
 # display the menu
 root.config(menu=menubar)
-
+root.title("A2J Builder")
 
 
 mainloop()
