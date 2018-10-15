@@ -12,7 +12,9 @@ root = Tk()
 
 maxrow = 16
 
-
+STEPS = 1
+PAGES = 1
+VARS = 1
 
 #master = Tk()
 
@@ -63,7 +65,43 @@ def makefield(fieldtext, fieldreq, fieldlabel, fieldname):
 def hello():
     print "hello!"
 
+def addstep():
+    global STEPS
+    STEPS = STEPS + 1
+    maketable(STEPS, PAGES, VARS)
+
+def addpage():
+    global PAGES
+    PAGES = PAGES + 1
+    maketable(STEPS, PAGES, VARS)
+
+def addvar():
+    global VARS
+    VARS = VARS + 1
+    maketable(STEPS, PAGES, VARS)
+
+def substep():
+    global STEPS
+    if STEPS > 1:
+        STEPS = STEPS - 1
+        maketable(STEPS, PAGES, VARS)
+
+def subpage():
+    global PAGES
+    if PAGES > 1:
+        PAGES = PAGES - 1
+        maketable(STEPS, PAGES, VARS)
+
+def subvar():
+    global VARS
+    if VARS > 1:
+        VARS = VARS - 1
+        maketable(STEPS, PAGES, VARS)
+
+
 def maketable(nosteps, nopages, novars):
+    for label in root.grid_slaves():
+        label.grid_forget()
     sl = 0
     sl2 = 1
     so = 2
@@ -79,24 +117,28 @@ def maketable(nosteps, nopages, novars):
     em = vd + 1
 
     steptitle = Label(root, text="STEPS")
-    stepadd = Button(root, text="Add Step", command = root.quit)
+    stepadd = Button(root, text="Add Step", command = addstep)
+    stepsub = Button(root, text="Remove Step", command = substep)
     stepnumber = Label(root, text="Step Number")
     steplabel = Label(root, text="Step Label")
     pagetitle = Label(root, text="PAGES")
-    pageadd = Button(root, text="Add Page", command = root.quit)
+    pageadd = Button(root, text="Add Page", command = addpage)
+    pagesub = Button(root, text="Remove Page", command = subpage)
     pagenumber = Label(root, text=" Number")
     pagelabel = Label(root, text="Step Label")
     vartitle = Label(root, text="VARIABLES")
-    varadd = Button(root, text="Add Variable", command = root.quit)
+    varadd = Button(root, text="Add Variable", command = addvar)
+    varsub = Button(root, text="Remove Variable", command = subvar)
     varnumber = Label(root, text="Step Number")
     varlabel = Label(root, text="Step Label")
     c = Button(root, text="Save", command=callback)
     d = Button(root, text="Open", command=callbackopen)
-    e = Button(root, text="Value", command=callback3)
-    f = Button(root, text="Quit", command=root.quit)
+    e = Button(root, text="Run", command=callback3)
+    f = Button(root, text="Exit", command=root.quit)
 
     steptitle.grid(row=sl, column=0)
     stepadd.grid(row=sl, column=1)
+    stepsub.grid(row=sl, column=2)
     stepnumber.grid(row=sl2, column=0)
     steplabel.grid(row=sl2, column=1)
     for i in range(so, sd): #Rows
@@ -106,6 +148,7 @@ def maketable(nosteps, nopages, novars):
     
     pagetitle.grid(row=pl, column=0)
     pageadd.grid(row=pl, column=1)
+    pagesub.grid(row=pl, column=2)
     pagenumber.grid(row=pl2, column=0)
     pagelabel.grid(row=pl2, column=1)
     for i in range(po, pd): #Rows
@@ -115,6 +158,7 @@ def maketable(nosteps, nopages, novars):
     
     vartitle.grid(row=vl, column=0)
     varadd.grid(row=vl, column=1)
+    varsub.grid(row=vl, column=2)
     varnumber.grid(row=vl2, column=0)
     varlabel.grid(row=vl2, column=1)
     for i in range(vo, vd): #Rows
@@ -129,7 +173,7 @@ def maketable(nosteps, nopages, novars):
 
 
 #Create Step Grid
-maketable(5, 5, 5)
+maketable(STEPS, PAGES, VARS)
 
 '''
 height = 5
@@ -166,6 +210,7 @@ menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
 filemenu.add_command(label="Open", command=callbackopen)
 filemenu.add_command(label="Save", command=callback)
+filemenu.add_command(label="Run", command=root.quit)
 filemenu.add_separator()
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)
