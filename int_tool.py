@@ -24,8 +24,6 @@ stepAry = []
 pageAry = []
 varAry = []
 
-#master = Tk()
-
 def callback():
     currdir = os.getcwd()
     savedir = tkFileDialog.asksaveasfilename(parent=root,defaultextension='.bin', initialdir=currdir, title='Please select a directory')
@@ -40,8 +38,11 @@ def callbackopen():
         print "You chose %s" % tempdir
     return tempdir
 
+
+
+
 def callback3():
-    h = find_in_grid(root, 3, 0).get()
+    h = find_in_grid(root, 3, 0)
     print h
 
 def find_in_grid(frame, row, column):
