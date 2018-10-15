@@ -16,6 +16,10 @@ STEPS = 1
 PAGES = 1
 VARS = 1
 
+NOFS = 2
+NOFP = 5
+NOFV = 3
+
 stepAry = []
 pageAry = []
 varAry = []
@@ -102,10 +106,36 @@ def subvar():
         VARS = VARS - 1
         maketable(STEPS, PAGES, VARS)
 
+def e2aStep(e):
+    return e - 2
+
+def e2aPage(e):
+    global STEPS
+    return e - 4 - STEPS
+
+def e2aVar(e):
+    global STEPS
+    global PAGES
+    return e - 6 - STEPS - PAGES
+
+def a2eStep(a):
+    return a + 2
+
+def a2ePage(a):
+    global STEPS
+    return a + 4 + STEPS
+
+def a2eVar(a):
+    global STEPS
+    global PAGES
+    return a + 6 + STEPS + PAGES
 
 def maketable(nosteps, nopages, novars):
     for label in root.grid_slaves():
         label.grid_forget()
+    
+    global NOFS, NOFP, NOFV
+    
     sl = 0
     sl2 = 1
     so = 2
@@ -136,8 +166,8 @@ def maketable(nosteps, nopages, novars):
     vartitle = Label(root, text="VARIABLES")
     varadd = Button(root, text="Add Variable", command = addvar)
     varsub = Button(root, text="Remove Variable", command = subvar)
-    varnumber = Label(root, text="Step Number")
-    varlabel = Label(root, text="Step Label")
+    varnumber = Label(root, text="Variable Name")
+    varlabel = Label(root, text="Variable Type")
     c = Button(root, text="Save", command=callback)
     d = Button(root, text="Open", command=callbackopen)
     e = Button(root, text="Run", command=callback3)
@@ -149,7 +179,7 @@ def maketable(nosteps, nopages, novars):
     stepnumber.grid(row=sl2, column=0)
     steplabel.grid(row=sl2, column=1)
     for i in range(so, sd): #Rows
-        for j in range(2): #Columns
+        for j in range(NOFS): #Columns
             b = Entry(root, text="")
             b.insert(END, '%d.%d' % (i, j))
             b.grid(row=i, column=j)
@@ -160,7 +190,7 @@ def maketable(nosteps, nopages, novars):
     pagenumber.grid(row=pl2, column=0)
     pagelabel.grid(row=pl2, column=1)
     for i in range(po, pd): #Rows
-        for j in range(5): #Columns
+        for j in range(NOFP): #Columns
             b = Entry(root, text="")
             b.insert(END, '%d.%d' % (i, j))
             b.grid(row=i, column=j)
@@ -171,7 +201,14 @@ def maketable(nosteps, nopages, novars):
     varnumber.grid(row=vl2, column=0)
     varlabel.grid(row=vl2, column=1)
     for i in range(vo, vd): #Rows
-        for j in range(3): #Columns
+        for j in range(NOFV): #Columns
+            '''if j == 1:
+                b = Listbox(root)
+                b.insert(END, "Variable Type")
+
+                for item in ["one", "two", "three", "four"]:
+                    b.insert(END, item)
+            else:'''
             b = Entry(root, text="")
             b.insert(END, '%d.%d' % (i, j))
             b.grid(row=i, column=j)
