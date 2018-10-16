@@ -23,6 +23,10 @@ NOFV = 3
 stepAry = []
 pageAry = []
 varAry = []
+blankAry = []
+entrylist = []
+entrylistX = []
+entrylistY = []
 
 def callback():
     currdir = os.getcwd()
@@ -43,16 +47,49 @@ def callbackopen():
 
 def callback3():
     h = find_in_grid(root, 3, 0)
-    print h
+#print h
 
 def find_in_grid(frame, row, column):
-    for children in frame.children.values():
+    global entrylist, entrylistX, entrylistY, blankAry
+    
+    print "entrylist: "
+    print entrylist
+    print "STEPS: %d" % STEPS
+    print "PagesO %d" % PAGES
+    print "Vars: %d" % VARS
+    g = 0
+    blankAry = []
+    ent = []
+    while(g < len(entrylistX)):
+        if g < (STEPS * NOFS):
+            ent = []
+            for field in range(0, NOFS):
+                ent.append(entrylist[g + field].get())
+            blankAry.append(ent)
+            #blankAry.append([entrylist[i].get(), entrylist[i+1].get()])
+            g = g + NOFS
+        elif g < (PAGES * NOFP) + (STEPS * NOFS):
+            ent = []
+            for field in range(0, NOFP):
+                ent.append(entrylist[g + field].get())
+            blankAry.append(ent)
+            #blankAry.append([entrylist[i].get(), entrylist[i+1].get()])
+            g = g + NOFP
+        else:
+            ent = []
+            for field in range(0, NOFV):
+                ent.append(entrylist[g + field].get())
+            blankAry.append(ent)
+            g = g + NOFV
+    print "array "
+    print blankAry
+    '''for children in frame.children.values():
         info = children.grid_info()
         #note that rows and column numbers are stored as string
         print info['row']
         print info['column']
         if info['row'] == str(row) and info['column'] == str(column):
-            return children
+            return children'''
     return None
 
 def makepage():
@@ -135,23 +172,25 @@ def maketable(nosteps, nopages, novars):
     for label in root.grid_slaves():
         label.grid_forget()
     
-    global NOFS, NOFP, NOFV
+    
+    global NOFS, NOFP, NOFV, stepAry, pageAry, varAry, entrylist, entrylistX, entrylistY, blankAry
+
+    entrylist = []
+    entrylistX = []
+    entrylistY = []
     
     sl = 0
     sl2 = 1
     so = 2
     sd = so + nosteps
-    print "sd %d" % sd
     pl = sd + 0
     pl2 = sd + 1
     po = sd + 2
     pd = po + nopages
-    print "pd %d" % pd
     vl = pd + 0
     vl2 = pd + 1
     vo = pd + 2
     vd = vo + novars
-    print "vd %d" % vd
     em = vd + 1
 
     steptitle = Label(root, text="STEPS")
@@ -180,9 +219,17 @@ def maketable(nosteps, nopages, novars):
     stepnumber.grid(row=sl2, column=0)
     steplabel.grid(row=sl2, column=1)
     for i in range(so, sd): #Rows
+        print "i: %d" % e2aStep(i)
+        print "steps: %d" % STEPS
         for j in range(NOFS): #Columns
             b = Entry(root, text="")
-            b.insert(END, '%d.%d' % (i, j))
+            if blankAry != [] and i < e2aStep(i)+1:
+                b.insert(END, '%s' % blankAry[e2aStep(i)][j])
+            else:
+                b.insert(END, '%s.%s' % (i, j))
+            entrylist.append(b)
+            entrylistX.append(i)
+            entrylistY.append(j)
             b.grid(row=i, column=j)
     
     pagetitle.grid(row=pl, column=0)
@@ -193,7 +240,13 @@ def maketable(nosteps, nopages, novars):
     for i in range(po, pd): #Rows
         for j in range(NOFP): #Columns
             b = Entry(root, text="")
-            b.insert(END, '%d.%d' % (i, j))
+            if blankAry != [] and i < e2aPage(i)+1:
+                b.insert(END, '%s' % blankAry[e2aPage(i)][j])
+            else:
+                b.insert(END, '%s.%s' % (i, j))
+            entrylist.append(b)
+            entrylistX.append(i)
+            entrylistY.append(j)
             b.grid(row=i, column=j)
     
     vartitle.grid(row=vl, column=0)
@@ -211,7 +264,13 @@ def maketable(nosteps, nopages, novars):
                     b.insert(END, item)
             else:'''
             b = Entry(root, text="")
-            b.insert(END, '%d.%d' % (i, j))
+            if blankAry != [] and i < e2aVar(i)+1:
+                b.insert(END, '%s' % blankAry[e2aVar(i)][j])
+            else:
+                b.insert(END, '%s.%s' % (i, j))
+            entrylist.append(b)
+            entrylistX.append(i)
+            entrylistY.append(j)
             b.grid(row=i, column=j)
     c.grid(row=em, column=0)
     d.grid(row=em, column=1)
