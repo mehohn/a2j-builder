@@ -219,11 +219,11 @@ def maketable(nosteps, nopages, novars):
     stepnumber.grid(row=sl2, column=0)
     steplabel.grid(row=sl2, column=1)
     for i in range(so, sd): #Rows
-        print "i: %d" % e2aStep(i)
+        print "i: %d" % i
         print "steps: %d" % STEPS
         for j in range(NOFS): #Columns
             b = Entry(root, text="")
-            if blankAry != [] and i < e2aStep(i)+1:
+            if blankAry != [] and i <= a2eStep(STEPS) :
                 b.insert(END, '%s' % blankAry[e2aStep(i)][j])
             else:
                 b.insert(END, '%s.%s' % (i, j))
